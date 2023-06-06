@@ -7,32 +7,22 @@ import javax.swing.*;
 
 import common.*;
 
-/**
- * ����򵥽����������
- * 
- * @author WXQ
- *
- */
-public class MyWindow extends JFrame implements BaseUI 
-{
+public class MyWindow extends JFrame implements BaseUI{
 
 	private   JPanel contentPane;
 	protected JComponent jPanel = null;
 
-	/** ��ʾͼ����豸��ȱʡΪͼ����ʾ��塣*/
-	protected Graphics2D theDevice ; 
+	protected Graphics2D theDevice ;
 
 	protected Image theOnceImage = null; 
 
-	/**
-	 * Create the frame.
-	 */
+
 	public MyWindow() {
 		setBackground(Color.BLACK);
 		setFont(new Font("Cascadia Code", Font.BOLD, 24));
 		setTitle("DustComp");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 700);
+//		setBounds(100, 100, 1000, 700);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int myWidth = screenSize.width /2;    //* 3 / 4;
 		int myHeight = screenSize.height * 3 / 4;
@@ -42,7 +32,7 @@ public class MyWindow extends JFrame implements BaseUI
 		setBounds(x, y, myWidth, myHeight);
 
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(Color.BLACK);
 //		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		jPanel = contentPane;
@@ -79,7 +69,7 @@ public class MyWindow extends JFrame implements BaseUI
 		if(theDevice == null)
 			theDevice = (Graphics2D)jPanel.getGraphics();
         if(theDevice == null) return;
-		theDevice.setBackground(Color.WHITE);
+		theDevice.setBackground(Color.BLACK);
 		theDevice.clearRect(0, 0, getWidth(), 100);
         ((Graphics)theDevice).setFont(new Font("Cascadia Code",Font.BOLD,28));
 		theDevice.drawString(msg, 20, 60);
@@ -101,11 +91,24 @@ public class MyWindow extends JFrame implements BaseUI
 	public void drawPixel(double x, double y, uiPixelAttrib pa)
 	{
 //		beginPaint();
+//		System.out.println(isInMyWindow(x,y));
+//		if(!isInMyWindow(x,y)){
+//			System.out.println("out of bounds");
+//		}
 		if( theDevice == null )
 			theDevice = (Graphics2D)getGraphics();
 		if( theDevice == null )
 		    return;
-
+		double x0=getBounds().getX();
+		double y0=getBounds().getY();
+		double x1=getBounds().getWidth()+x0;
+		double y1=getBounds().getHeight()+y0;
+		if(!getBounds().contains(x0+x,y0+y)){
+			System.out.println("warnring:point("+x+","+y+") drew out of bounds [("+x0+","+y0+"),("+x1+","+y1+")]");
+		}
+//		if(!theDevice.getDeviceConfiguration().getBounds().contains(x,y)){
+//			System.out.println("out of bounds");
+//		}
 		theDevice.setColor(new Color((int)pa.red(), (int)pa.green(), (int)pa.blue()));
 
 		theDevice.fillArc((int)x, (int)y, (int)pa.size(), (int)pa.size(), 0, 360);
@@ -126,10 +129,11 @@ public class MyWindow extends JFrame implements BaseUI
 		int imgWidth = screenSize.width; //getSize().width;
 		int imgHeight = screenSize.height; //getSize().height;
 		theOnceImage = createImage(imgWidth, imgHeight);
+
 		theDevice = (Graphics2D)theOnceImage.getGraphics();
 		
-
-		theDevice.setBackground(Color.WHITE);
+//		theDevice.get
+		theDevice.setBackground(Color.BLACK);
 		theDevice.clearRect(0, 0, imgWidth, imgHeight);
     }
 
@@ -151,6 +155,9 @@ public class MyWindow extends JFrame implements BaseUI
 		g.setFont(new Font("Cascadia Code",Font.PLAIN,28));
 		g.drawString(waterMarker, (int)x, (int)y);
 		((Graphics2D)g).setComposite(oldac);
+	}
+	boolean isInMyWindow(double x,double y){
+		return getBounds().contains(x,y);
 	}
 
 }

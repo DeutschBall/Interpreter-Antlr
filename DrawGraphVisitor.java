@@ -56,6 +56,25 @@ public interface DrawGraphVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatColor(DrawGraphParser.StatColorContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DrawGraphParser#statSize}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatSize(DrawGraphParser.StatSizeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawGraphParser#statVar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatVar(DrawGraphParser.StatVarContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code varExpr}
+	 * labeled alternative in {@link DrawGraphParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarExpr(DrawGraphParser.VarExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code unaryExpr}
 	 * labeled alternative in {@link DrawGraphParser#expr}.
 	 * @param ctx the parse tree
